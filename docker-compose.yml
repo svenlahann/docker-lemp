@@ -1,0 +1,29 @@
+version: "2"
+services:
+  webserver:
+    image: nginx:1.13
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - "./etc/nginx:/etc/nginx/conf.d"
+      - "./htdocs:/usr/share/nginx/html"
+  php:
+    build: ./environment/php
+    restart: always
+    ports:
+      - 9000:9000
+    volumes:
+      - "./htdocs:/var/www/html"
+  database:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "database"
+      MYSQL_USER: "database"
+      MYSQL_PASSWORD: "database"
+    ports:
+      - 3306:3306
+    volumes:
+      - "./data/db/mysql:/var/lib/mysql"
